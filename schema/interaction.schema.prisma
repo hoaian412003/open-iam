@@ -1,0 +1,17 @@
+model Interaction {
+  id             String   @id @default(cuid()) // Interaction UID
+  iat            Int
+  exp            Int
+  returnTo       String
+  params         Json // authorization request params
+  prompt         Json // prompt details (e.g., login, consent)
+  lastSubmission Json?
+  trusted        String[]
+  cid            String
+  jti            String
+  kind           String
+  result         Json? // login/consent result (set when completed)
+  session        Json?
+
+  @@map(name: "interaction")
+}

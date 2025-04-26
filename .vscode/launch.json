@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node2",
+      "request": "launch",
+      "name": "Launch Next.js",
+      "program": "${workspaceFolder}/auth-server/index.mjs",
+      "cwd": "${workspaceFolder}",
+      "outputCapture": "std",
+      "sourceMaps": true
+    }
+  ]
+}

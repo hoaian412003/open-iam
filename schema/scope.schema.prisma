@@ -1,0 +1,14 @@
+model Scope {
+  id        String @id @default(cuid())
+
+  name      String
+  group     String
+  outputs    String[]
+
+  createdAt DateTime @default(now()) // optional helper
+  updatedAt DateTime @updatedAt // optional helper
+
+  @@unique([name, group])
+
+  @@map(name: "scope")
+}

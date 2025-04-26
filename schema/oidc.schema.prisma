@@ -1,0 +1,14 @@
+model oidcModel {
+  id           String   @default(cuid()) // OIDC-specific unique ID
+  type         String   // Maps to types from your `types` object
+  payload      Json     // Stored OIDC entity data
+  grantId      String?  // Optional for Grant-based queries
+  userCode     String?  @unique
+  uid          String?  @unique
+  consumedAt   DateTime?
+  expiresAt    DateTime?
+
+  @@id([id, type]) // Compound primary key
+  @@index([grantId])
+  @@index([expiresAt])
+}

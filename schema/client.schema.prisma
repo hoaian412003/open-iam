@@ -1,0 +1,12 @@
+model Client {
+  clientId      String   @id @default(cuid())
+  clientSecret  String
+  redirectUris  String[]
+  grantTypes    String[]
+  responseTypes String[]
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "clients")
+}

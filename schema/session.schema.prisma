@@ -1,0 +1,16 @@
+model Session {
+  id        String @id
+  jti       String // JWT ID (primary key)
+  uid       String @unique // Internal OIDC UID
+  accountId String? // User identifier
+  kind      String // e.g., "Session"
+  iat       Int // Issued at (Unix timestamp)
+  exp       Int // Expiration (Unix timestamp)
+  loginTs   Int? // Login timestamp (Unix)
+  expiresAt Int? // Expiration timestamp (Unix)
+
+  createdAt DateTime @default(now()) // optional helper
+  updatedAt DateTime @updatedAt // optional helper
+
+  @@map(name: "session")
+}
