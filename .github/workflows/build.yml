@@ -29,15 +29,15 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-build
-          path: |
-            .next
-            public
-            package.json
-            node_modules
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: next-build
+      #     path: |
+      #       .next
+      #       public
+      #       package.json
+      #       node_modules
 
       - name: Run Cypress tests
-        run: npm ci
+        run: npm run ci
