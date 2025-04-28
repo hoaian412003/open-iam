@@ -1,10 +1,10 @@
 name: E2E Tests with Cypress
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 jobs:
   cypress-run:
@@ -23,22 +23,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the project
-        run: npm run build
-
-      - name: Start Next.js app
-        run: npm run start &
-        env:
-          NODE_ENV: production
-
-      - name: Wait for app to be ready
-        uses: jakejarvis/wait-action@v0.1.0
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          url: 'http://localhost:3000'
-          timeout: 60
+          name: next-build
+          path: .
 
       - name: Run Cypress tests
         run: npx cypress run
