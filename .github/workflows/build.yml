@@ -40,4 +40,4 @@ jobs:
             node_modules
 
       - name: Run Cypress tests
-        run: npx cypress run
+        run: npm ci

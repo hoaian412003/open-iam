@@ -1,3 +1,5 @@
+import { user } from "@heroui/theme"
+
 export const loginToGoogle = (username: string, password: string) => {
   cy.origin(
     'https://accounts.google.com',
@@ -31,7 +33,8 @@ export const loginToGoogle = (username: string, password: string) => {
 }
 
 export const loginGoogleWithTestAccount = () => {
-  const username = Cypress.env('googleTestUsername');
-  const password = Cypress.env('googleTestPassword');
+  const username = Cypress.env('GOOGLE_TEST_USERNAME');
+  const password = Cypress.env('GOOGLE_TEST_PASSWORD');
+  console.log('username: ', username, password)
   loginToGoogle(username, password);
 }
