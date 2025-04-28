@@ -1,3 +1,4 @@
+import { host } from "@/utils/host";
 import axios from "axios";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import { Provider } from "next-auth/providers";
@@ -7,15 +8,15 @@ export const providers: Array<Provider> = [
     id: "admin",
     name: "Admin",
     type: "oidc",
-    issuer: "http://localhost:3000/oidc",
+    issuer: `${host}/oidc`,
     authorization: {
-      url: "http://localhost:3000/oidc/auth",
+      url: `${host}/oidc/auth`,
       params: { scope: "openid email profile policy" },
     },
     clientId: "Admin",
     clientSecret:
       "3cd856fe761342acd9aef52c17171bf7c368c5f6075cefdd1f220f0a66e1221b",
-    wellKnown: "http://localhost:3000/oidc/.well-known/openid-configuration",
+    wellKnown: `${host}/oidc/.well-known/openid-configuration`,
     async profile(_profile: any, token) {
       const profile = await axios
         .get("http://localhost:3000/oidc/me", {

@@ -16,6 +16,7 @@ import { Button } from "@heroui/button";
 import { createCredential } from "../actions/create";
 import { createModal } from "@/components/Modal";
 import { editCredentail } from "../actions/edit";
+import { host } from "@/utils/host";
 
 type Props = {
   data: CredentialProvider;
@@ -70,7 +71,7 @@ export const EditCredentialModal = createModal<Props>(({ data, ...props }) => {
                   labelPlacement="outside"
                   name="callbackUrl"
                   placeholder="https://"
-                  value={`http://localhost:3000/interaction/callback/${credential.name}`}
+                  value={`${host}/interaction/callback/${credential.name}`}
                   onChange={handleFormChange}
                 />
 

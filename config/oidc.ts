@@ -1,11 +1,12 @@
 // lib/oidc.ts
 import { Provider } from "oidc-provider";
 import { PrismaClient } from "@prisma/client";
+import { host } from "@/utils/host";
 
 const prisma = new PrismaClient();
 
 class PrismaAdapter {
-  constructor() {}
+  constructor() { }
 
   async find(id: string) {
     const client = await prisma.client.findUnique({
@@ -23,11 +24,11 @@ class PrismaAdapter {
     };
   }
 
-  async upsert() {}
-  async destroy() {}
-  async consume() {}
-  async findByUserCode() {}
-  async findByUid() {}
+  async upsert() { }
+  async destroy() { }
+  async consume() { }
+  async findByUserCode() { }
+  async findByUid() { }
 }
 
 const configuration = {
@@ -46,4 +47,4 @@ const configuration = {
   }),
 };
 
-export const oidc = new Provider("http://localhost:3000", configuration as any);
+export const oidc = new Provider(host, configuration as any);
