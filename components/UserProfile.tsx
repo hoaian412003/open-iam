@@ -6,16 +6,18 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Image,
   Spinner,
 } from "@heroui/react";
 
+import { Image } from '@/components/Image';
+
 import { LoginButton } from "./LoginButton";
 import { LogoutButton } from "./LogoutButton";
+import { UNSTABLE_REVALIDATE_RENAME_ERROR } from "next/dist/lib/constants";
 
 type Props = {};
 
-export const UserProfile = ({}: Props) => {
+export const UserProfile = ({ }: Props) => {
   const session = useSession();
 
   if (session.status === "loading") {
@@ -34,9 +36,18 @@ export const UserProfile = ({}: Props) => {
     <div className="ml-4" id="user-profile">
       <Dropdown placement="bottom-end">
         <DropdownTrigger className="cursor-pointer">
-          <Image src={user.image} width={40} />
+          <Image src={user.avatar} width={40} diceOption={{ seed: user.name }} className="rounded-full" />
         </DropdownTrigger>
         <DropdownMenu>
+          <DropdownItem key="account">
+            <div className="flex flex-row gap-2 items-center">
+              <Image src={user.avatar} width={30} />
+              <div>
+                <p>@{user.name}</p>
+                <p>{user.username}</p>
+              </div>
+            </div>
+          </DropdownItem>
           <DropdownItem key="settings">My Settings</DropdownItem>
           <DropdownItem key="team_settings">Team Settings</DropdownItem>
           <DropdownItem key="analytics">Analytics</DropdownItem>

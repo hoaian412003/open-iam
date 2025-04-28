@@ -18,7 +18,6 @@ export const ScopeList: React.FC<Props> = ({ scopes }) => {
           .map((scopeName: string, index: number) => {
             const scope = Scopes[scopeName];
 
-            console.log(scope);
 
             return (
               <AccordionItem

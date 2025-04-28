@@ -14,7 +14,7 @@ export const providers: Array<Provider> = [
     },
     clientId: "Admin",
     clientSecret:
-      "46a9d288abdaeae2c3c6534bede0dd6d1f9abc01e781c1647677cdc9f178c3ec",
+      "3cd856fe761342acd9aef52c17171bf7c368c5f6075cefdd1f220f0a66e1221b",
     wellKnown: "http://localhost:3000/oidc/.well-known/openid-configuration",
     async profile(_profile: any, token) {
       const profile = await axios
@@ -27,9 +27,10 @@ export const providers: Array<Provider> = [
 
       return {
         id: profile.sub,
+        username: profile.sub,
         name: profile.name,
         email: profile.email,
-        image: profile.picture,
+        avatar: profile.avatar,
         roles: profile.roles,
         permissions: profile.permissions,
       } as any;
@@ -48,7 +49,11 @@ export const authOptions: NextAuthConfig = {
   },
   callbacks: {
     jwt({ token, user, account }) {
-      if (user) token.username = user.username;
+      if (user) {
+        // Add field to jwt token here to bind to useSession;
+        token.username = user.username;
+        token.avatar = (user as any).avatar;
+      };
       if (account?.id_token) {
         token.idToken = account.id_token;
       }
@@ -57,11 +62,13 @@ export const authOptions: NextAuthConfig = {
     },
     session({ session, token }) {
       session.user.username = token.username;
+      session.user.avatar = token.avatar as string;
       session.idToken = token.idToken as string;
 
       return session;
     },
   },
+  trustHost: true
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

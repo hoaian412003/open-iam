@@ -12,13 +12,13 @@ import { useState } from "react";
 
 import { updateClient } from "../actions/edit";
 
-import Icons from "@/components/icons/index";
 import { SupportedGrantTypes } from "@/config/grantTypes";
 import { SupportedReponseTypes } from "@/config/reponseTypes";
 import { SupportedScopes } from "@/config/scope";
 import { Client } from "@/types/client";
 import { generateClientSecret } from "@/utils/client";
 import { createModal } from "@/components/Modal";
+import { ListInput } from "@/components/ListInput";
 
 type Props = {
   data: Client;
@@ -36,8 +36,10 @@ export const EditClientModal = createModal<Props>(({ data, ...props }) => {
   const [responseTypes, setResponseTypes] = useState<Selection>(
     new Set(data.response_types),
   );
+  const [postLogoutUris, setPostLogoutUris] = useState<string[]>(data.post_logout_redirect_uris);
   const [scope, setScope] = useState<Selection>(new Set(data.scope.split(" ")));
   const router = useRouter();
+
 
   return (
     <Modal {...props}>
@@ -62,6 +64,7 @@ export const EditClientModal = createModal<Props>(({ data, ...props }) => {
                     grant_types: Array.from(grantTypes),
                     response_types: Array.from(responseTypes),
                     scope: Array.from(scope).join(" "),
+                    post_logout_redirect_uris: postLogoutUris,
                   }).then(() => {
                     router.refresh();
                     setLoading(false);
@@ -80,7 +83,6 @@ export const EditClientModal = createModal<Props>(({ data, ...props }) => {
 
                 <Input
                   isRequired
-                  defaultValue={generateClientSecret()}
                   label="Client Secret"
                   labelPlacement="outside"
                   name="client_secret"
@@ -136,51 +138,22 @@ export const EditClientModal = createModal<Props>(({ data, ...props }) => {
                   ))}
                 </Select>
 
-                <div className="w-full flex flex-col gap-3">
-                  <Input
-                    className="pr-0"
-                    endContent={
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setRedirectUris([...redirectUris, redirectUri]);
-                          setRedirectUri("");
-                        }}
-                      >
-                        <Icons.PlusCircle />
-                      </div>
-                    }
-                    label="Client Uris"
-                    labelPlacement="outside"
-                    placeholder="https://"
-                    type="url"
-                    value={redirectUri}
-                    onChange={(e) => setRedirectUri(e.target.value)}
-                  />
+                <ListInput values={redirectUris}
+                  onValueChange={setRedirectUris}
+                  baseInputProps={{
+                    placeholder: 'https://',
+                    type: 'url',
+                    label: "Redirect Uris",
+                  }}
+                />
 
-                  {redirectUris.map((r, i) => (
-                    <Input
-                      key={i}
-                      color="secondary"
-                      contentEditable={false}
-                      disabled={true}
-                      endContent={
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setRedirectUris(
-                              redirectUris.filter((_, _i) => _i !== i),
-                            );
-                          }}
-                        >
-                          <Icons.MinusCircle />
-                        </div>
-                      }
-                      labelPlacement="outside"
-                      value={r}
-                    />
-                  ))}
-                </div>
+                <ListInput values={postLogoutUris}
+                  onValueChange={setPostLogoutUris}
+                  baseInputProps={{
+                    placeholder: 'https://',
+                    type: 'url',
+                    label: "Post logout Uris",
+                  }} />
 
                 <Button
                   className="w-full"

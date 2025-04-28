@@ -6,4 +6,5 @@ export type Client = {
   grant_types: string[];
   redirect_uris: string[];
   response_types: string[];
+  post_logout_redirect_uris: string[];
 };

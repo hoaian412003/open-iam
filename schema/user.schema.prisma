@@ -5,8 +5,7 @@ model User {
   email     String?
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  profileId String?
-  profile   Profile? @relation(fields: [profileId], references: [id])
+  profile   Json
 
   @@map(name: "users")
 }

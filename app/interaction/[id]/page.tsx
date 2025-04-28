@@ -16,7 +16,6 @@ export default async ({ params }: Props) => {
   const { id } = await params;
   const interaction = await getInteraction(id);
 
-  console.log("interaction: ", interaction);
 
   const prompt = interaction?.prompt as InteractionPrompt;
   const interactionParams = interaction?.params as InteractionParams;
@@ -41,9 +40,6 @@ export default async ({ params }: Props) => {
   const user = await prisma.user.findUnique({
     where: {
       username: session?.accountId!,
-    },
-    include: {
-      profile: true,
     },
   });
 

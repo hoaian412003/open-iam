@@ -24,6 +24,7 @@ import Icons from "@/components/icons/index";
 import { SupportedGrantTypes } from "@/config/grantTypes";
 import { SupportedReponseTypes } from "@/config/reponseTypes";
 import { SupportedScopes } from "@/config/scope";
+import { ListInput } from "@/components/ListInput";
 
 type Props = {} & ModalProps;
 
@@ -31,7 +32,7 @@ export const CreateClientModal: React.FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const [redirectUris, setRedirectUris] = useState<string[]>([]);
-  const [redirectUri, setRedirectUri] = useState("");
+  const [postLogoutUris, setPostLogoutUris] = useState<string[]>([]);
   const [grantTypes, setGrantTypes] = useState<Selection>(new Set([]));
   const [responseTypes, setResponseTypes] = useState<Selection>(new Set([]));
   const [scope, setScope] = useState<Selection>(new Set(["openid"]));
@@ -62,6 +63,7 @@ export const CreateClientModal: React.FC<Props> = (props) => {
                     createClient({
                       ...data,
                       redirect_uris: redirectUris,
+                      post_logout_redirect_uris: postLogoutUris,
                       grant_types: Array.from(grantTypes),
                       response_types: Array.from(responseTypes),
                       scope: Array.from(scope).join(" "),
@@ -137,51 +139,21 @@ export const CreateClientModal: React.FC<Props> = (props) => {
                     ))}
                   </Select>
 
-                  <div className="w-full flex flex-col gap-3">
-                    <Input
-                      className="pr-0"
-                      endContent={
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setRedirectUris([...redirectUris, redirectUri]);
-                            setRedirectUri("");
-                          }}
-                        >
-                          <Icons.PlusCircle />
-                        </div>
-                      }
-                      label="Client Uris"
-                      labelPlacement="outside"
-                      placeholder="https://"
-                      type="url"
-                      value={redirectUri}
-                      onChange={(e) => setRedirectUri(e.target.value)}
-                    />
+                  <ListInput values={redirectUris}
+                    onValueChange={setRedirectUris}
+                    baseInputProps={{
+                      placeholder: 'https://',
+                      type: 'url',
+                      label: "Redirect Uris",
+                    }} />
 
-                    {redirectUris.map((r, i) => (
-                      <Input
-                        key={i}
-                        color="secondary"
-                        contentEditable={false}
-                        disabled={true}
-                        endContent={
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setRedirectUris(
-                                redirectUris.filter((_, _i) => _i !== i),
-                              );
-                            }}
-                          >
-                            <Icons.MinusCircle />
-                          </div>
-                        }
-                        labelPlacement="outside"
-                        value={r}
-                      />
-                    ))}
-                  </div>
+                  <ListInput values={postLogoutUris}
+                    onValueChange={setPostLogoutUris}
+                    baseInputProps={{
+                      placeholder: 'https://',
+                      type: 'url',
+                      label: "Post logout Uris",
+                    }} />
 
                   <Button
                     className="w-full"

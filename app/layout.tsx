@@ -30,12 +30,12 @@ export default async function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+      {/* <head> */}
+      {/*   <link */}
+      {/*     href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" */}
+      {/*     rel="stylesheet" */}
+      {/*   /> */}
+      {/* </head> */}
 
       <body>
         <Providers themeProps={{ attribute: "class" }}>{children}</Providers>

@@ -22,44 +22,6 @@ const configuration = {
     backchannelLogout: {
       enabled: true
     }
-    // rpInitiatedLogout: {
-    //   enabled: true,
-    //   async logoutSource(ctx, form) {
-    //     return `<!DOCTYPE html>
-    //     <html>
-    //     <head>
-    //       <title>Logout Request</title>
-    //       <style>/* css and html classes omitted for brevity, see lib/helpers/defaults.js */</style>
-    //     </head>
-    //     <body>
-    //       <div>
-    //         <h1>Do you want to sign-out from ${ctx.host}?</h1>
-    //         ${form}
-    //         <button autofocus type="submit" form="op.logoutForm" value="yes" name="logout">Yes, sign me out</button>
-    //         <button type="submit" form="op.logoutForm">No, stay signed in</button>
-    //       </div>
-    //     </body>
-    //     </html>`
-    //   },
-    //   async postLogoutSuccessSource(ctx) {
-    //     console.log(ctx)
-    //     // @param ctx - koa request context
-    //     const display = ctx.oidc.client?.clientName || ctx.oidc.client?.clientId;
-    //     ctx.body = `<!DOCTYPE html>
-    //       <html>
-    //       <head>
-    //         <title>Sign-out Success</title>
-    //         <style>/* css and html classes omitted for brevity, see lib/helpers/defaults.js */</style>
-    //       </head>
-    //       <body>
-    //         <div>
-    //           <h1>Sign-out Success</h1>
-    //           <p>Your sign-out ${display ? `with ${display}` : ''} was successful.</p>
-    //         </div>
-    //       </body>
-    //       </html>`;
-    //   }
-    // }
   },
   pkce: {
     required: () => false,
@@ -67,7 +29,6 @@ const configuration = {
   findAccount: async (ctx, id, token) => {
     const user = await prisma.user.findUnique({
       where: { username: id },
-      include: { profile: true },
     });
 
     return {
@@ -75,11 +36,11 @@ const configuration = {
       async claims(use, scope, claims, rejected) {
         return {
           sub: user.username,
-          name: user.profile?.name,
-          email: user.email,
+          name: user.profile.name,
+          email: user.profile.email,
           roles: ['admin', 'user'],
           permissions: ['read', 'write'],
-          picture: user.profile?.avatar,
+          avatar: user.profile.avatar,
         };
       },
     };
@@ -97,7 +58,7 @@ const configuration = {
       'middle_name',
       'name',
       'nickname',
-      'picture',
+      'avatar',
       'preferred_username',
       'profile',
       'updated_at',
@@ -197,7 +158,7 @@ app.prepare().then(async () => {
     } else {
       const { provider } = req.params;
       const { client, provider: config } = await getProvider(provider);
-      const { code, userNameField } = req.body;
+      const { code } = req.body;
 
       const option = {
         code,
@@ -214,21 +175,59 @@ app.prepare().then(async () => {
         console.log(error);
       })
 
-      const username = oauthUser[userNameField];
+      const userNameFields = await prisma.scope.findMany({
+        where: {
+          group: provider,
+          outputs: {
+            has: 'username'
+          }
+        }
+      });
+      let username = '';
+
+      userNameFields.map(({ name }) => {
+        username = username || oauthUser[name];
+      })
+
+      let profile = {};
+      const fields = await prisma.scope.findMany({
+        where: {
+          group: provider,
+        }
+      })
+
+      fields.map(({ name, outputs }) => {
+        outputs.map((output) => {
+          profile[output] = profile[output] || oauthUser[name];
+        })
+      })
 
       let user = await prisma.user.findFirst({
         where: {
           username
-        }
+        },
       });
 
       if (!user) {
         user = await prisma.user.create({
           data: {
-            username
+            username,
+            profile
           }
         })
       }
+
+      await prisma.user.update({
+        where: {
+          id: user.id
+        },
+        data: {
+          profile: {
+            ...user.profile,
+            ...profile
+          }
+        }
+      })
 
       const result = {
         login: {

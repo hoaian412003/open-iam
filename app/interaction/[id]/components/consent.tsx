@@ -10,7 +10,7 @@ import { InteractionParams } from "@/types/interaction";
 
 type Props = {
   missingScopes: string[];
-  user: User & { profile: { name: string; avatar: string } };
+  user: User & { profile: any };
   interactionParams: InteractionParams;
   interactionId: string;
 };
@@ -21,7 +21,6 @@ const ConsentPage: React.FC<Props> = async ({
   user,
   interactionId,
 }) => {
-  console.log("missingScopes: ", missingScopes);
 
   return (
     <div className="h-screen w-screen justify-center flex items-center">
@@ -30,10 +29,10 @@ const ConsentPage: React.FC<Props> = async ({
           Authorize {interactionParams.client_id}
         </h1>
         <div className="flex border border-gray-200 rounded-lg p-2 gap-2 w-full">
-          <Image src={user?.profile?.avatar || ""} width={40} />
+          <Image src={user?.profile.avatar || ""} width={40} />
           <div>
-            <h1 className="font-semibold text-md">{user?.profile?.name}</h1>
-            <p className="text-gray-500 text-sm">{user?.email}</p>
+            <h1 className="font-semibold text-md">{user?.profile.name}</h1>
+            <p className="text-gray-500 text-sm">{user?.profile.email}</p>
           </div>
         </div>
 

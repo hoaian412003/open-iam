@@ -72,6 +72,7 @@ const LoginPage = ({
               color="primary"
               type="submit"
               variant="solid"
+              id="login-btn"
             >
               Login
             </Button>
@@ -81,7 +82,7 @@ const LoginPage = ({
 
           <div className="flex flex-col justify-around w-full gap-2">
             {credentialProviders?.map((c, i) => (
-              <SSOOption key={i} data={c} interactionId={interactionId} />
+              <SSOOption id={c.name} key={i} data={c} interactionId={interactionId} />
             ))}
           </div>
         </div>

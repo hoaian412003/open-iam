@@ -9,7 +9,9 @@
     "build": "next build --no-lint",
     "build:oidc": "tsc --project tsconfig.oidc.json",
     "start": "NODE_ENV=production node auth-server/index.mjs",
-    "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
+    "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
+    "cypress:open": "cypress open",
+    "test": "cypress run"
   },
   "prisma": {
     "schema": "schema/"
@@ -46,6 +48,7 @@
     "body-parser": "^2.2.0",
     "clsx": "2.1.1",
     "cookie-parser": "^1.4.7",
+    "cypress": "^14.3.2",
     "express": "^5.1.0",
     "framer-motion": "11.13.1",
     "intl-messageformat": "^10.5.0",
