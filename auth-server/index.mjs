@@ -14,7 +14,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const prisma = new PrismaClient();
 
-export const host = process.env.VERCEL_URL || 'http://localhost:3000';
+export const host = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
 console.log("Host is: ", host)
 
 const configuration = {
