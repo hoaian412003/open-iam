@@ -8,10 +8,14 @@ import { getProvider } from './utils/provider.mjs';
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 
+
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const prisma = new PrismaClient();
+
+export const host = process.env.VERCEL_URL || 'http://localhost:3000';
+console.log("Host is: ", host)
 
 const configuration = {
   adapter: PrismaAdapter,
@@ -77,7 +81,7 @@ app.prepare().then(async () => {
   server.use(['/oidc', '/interaction'], bodyParser.json());
 
 
-  const oidc = new Provider('http://localhost:3000/oidc', configuration);
+  const oidc = new Provider(`${host}/oidc`, configuration);
 
   oidc.on('server_error', (ctx, error) => {
     console.error('OIDC server error', error);
@@ -162,7 +166,7 @@ app.prepare().then(async () => {
 
       const option = {
         code,
-        redirect_uri: `http://localhost:3000/interaction/callback/${provider}`,
+        redirect_uri: `${host}/interaction/callback/${provider}`,
         scope: config.scope
       };
 
@@ -244,7 +248,7 @@ app.prepare().then(async () => {
   server.all('/{*any}', (req, res) => handle(req, res));
 
   server.listen(3000, () => {
-    console.log('> Ready on http://localhost:3000');
-    console.log('> OIDC issuer: http://localhost:3000/oidc');
+    console.log(`> Ready on ${host}`);
+    console.log(`> OIDC issuer: ${host}/oidc`);
   });
 });

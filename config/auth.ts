@@ -3,6 +3,7 @@ import axios from "axios";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import { Provider } from "next-auth/providers";
 
+
 export const providers: Array<Provider> = [
   {
     id: "admin",
@@ -19,7 +20,7 @@ export const providers: Array<Provider> = [
     wellKnown: `${host}/oidc/.well-known/openid-configuration`,
     async profile(_profile: any, token) {
       const profile = await axios
-        .get("http://localhost:3000/oidc/me", {
+        .get(`${host}/oidc/me`, {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
           },
