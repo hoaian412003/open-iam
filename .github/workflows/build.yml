@@ -38,3 +38,6 @@ jobs:
             public
             package.json
             node_modules
+
+      - name: Run Cypress tests
+        run: npx cypress run
