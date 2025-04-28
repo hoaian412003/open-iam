@@ -6,7 +6,7 @@
     "dev": "DEBUG=oidc-provider:* nodemon --max-old-space-size=4096 -w auth-server auth-server/index.mjs",
     "debug": "node --inspect auth-server/index.mjs",
     "dev:next": "next dev",
-    "build": "next build --no-lint",
+    "build": "prisma generate && next build --no-lint",
     "build:oidc": "tsc --project tsconfig.oidc.json",
     "start": "NODE_ENV=production node auth-server/index.mjs",
     "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
