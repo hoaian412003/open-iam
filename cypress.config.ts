@@ -8,7 +8,8 @@ export default defineConfig({
     experimentalModifyObstructiveThirdPartyCode: true,
     env: {
       googleTestUsername: process.env.GOOGLE_USERNAME,
-      googleTestPassword: process.env.GOOGLE_PASSWORD
-    }
-  },
+      googleTestPassword: process.env.GOOGLE_PASSWORD,
+      host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+    },
+  }
 });

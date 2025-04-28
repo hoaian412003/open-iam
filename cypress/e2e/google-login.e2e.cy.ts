@@ -1,4 +1,4 @@
-import { host } from "@/utils/host";
+const host = Cypress.env('host');
 
 describe('template spec', () => {
   it('passes', () => {
