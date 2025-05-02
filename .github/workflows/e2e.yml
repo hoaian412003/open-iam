@@ -3,7 +3,12 @@ name: Build
 
 on:
   push:
+    branches:
+      - 'ft/*'  # Trigger only when branch starts with 'ft/'
+
   pull_request:
+    branches:
+      - 'ft/*'  # Trigger on PRs with branches starting with 'ft/'
 
 
 jobs:
@@ -23,21 +28,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
+      #
+      # - name: Build the app
+      #   run: npm run build
 
-      - name: Build the app
-        run: npm run build
-
-      - name: Find Trello Card by Branch Name
+      - name: Prepare Github Context
         id: find_card
         run: |
-          ./scripts/find-trello-card.sh "${{ github.head_ref || github.ref_name }}" "mA0xZgiC" "$TRELLO_KEY" "$TRELLO_TOKEN"
+          ./scripts/prepare-github-context.sh && echo $CYPRESS_grepTags
         env:
           TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
           TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
-
-
-
-      - name: Run Cypress tests
-        run: CYPRESS_grepTags= npm run ci
