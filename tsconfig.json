@@ -6,6 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": [
+      "cypress",
+      "@cypress/grep"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -36,7 +40,8 @@
     ".next/types/**/*.ts",
     "server.mjs",
     "config/oidc.js",
-    "auth-server/index.mjs", "auth-server/utils/scope.mjs",
+    "auth-server/index.mjs",
+    "auth-server/utils/scope.mjs",
   ],
   "exclude": [
     "node_modules"

@@ -3,8 +3,8 @@ name: Build
 
 on:
   push:
-    branches:
-      - main
+  pull_request:
+
 
 jobs:
   build:
@@ -29,15 +29,15 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: next-build
-      #     path: |
-      #       .next
-      #       public
-      #       package.json
-      #       node_modules
+      - name: Find Trello Card by Branch Name
+        id: find_card
+        run: |
+          ./scripts/find-trello-card.sh "${{ github.head_ref || github.ref_name }}" "mA0xZgiC" "$TRELLO_KEY" "$TRELLO_TOKEN"
+        env:
+          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+
+
 
       - name: Run Cypress tests
-        run: npm run ci
+        run: CYPRESS_grepTags= npm run ci

@@ -33,8 +33,7 @@ export const loginToGoogle = (username: string, password: string) => {
 }
 
 export const loginGoogleWithTestAccount = () => {
-  const username = Cypress.env('GOOGLE_TEST_USERNAME');
-  const password = Cypress.env('GOOGLE_TEST_PASSWORD');
-  console.log('username: ', username, password)
+  const username = Cypress.env('googleTestUsername');
+  const password = Cypress.env('googleTestPassword');
   loginToGoogle(username, password);
 }
