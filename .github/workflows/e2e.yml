@@ -42,6 +42,10 @@ jobs:
           TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
           TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
 
+      - name: Cypress grep tags debug
+        run: |
+          echo $GITHUB_ENV
+
       - name: Run e2e
         run: npm run ci
         continue-on-error: true
