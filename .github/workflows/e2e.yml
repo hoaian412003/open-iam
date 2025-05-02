@@ -34,6 +34,10 @@ jobs:
       - name: Build the app
         run: npm run build
 
+      - name: Get trello card
+        run: |
+          ./scripts/find-trello-card.sh jo57C1fP "${{ secrets.TRELLO_KEY }}" "${{ secrets.TRELLO_TOKEN }}"
+
       - name: Prepare Github Context
         id: find_card
         run: |
