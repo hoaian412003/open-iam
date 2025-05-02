@@ -28,16 +28,19 @@ jobs:
         with:
           node-version: 20
 
-      # - name: Install dependencies
-      #   run: npm install
-      #
-      # - name: Build the app
-      #   run: npm run build
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
 
       - name: Prepare Github Context
         id: find_card
         run: |
-          ./scripts/prepare-github-context.sh && echo $CYPRESS_grepTags
+          ./scripts/prepare-github-context.sh
         env:
           TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
           TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+
+      - name: Run e2e
+        run: npm run ci
