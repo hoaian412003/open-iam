@@ -44,3 +44,6 @@ jobs:
 
       - name: Run e2e
         run: npm run ci
+
+      - name: Report to trello
+        run: ./scripts/report-trello.sh

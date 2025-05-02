@@ -16,5 +16,6 @@ export default defineConfig({
       googleTestUsername: process.env.GOOGLE_TEST_USERNAME,
       googleTestPassword: process.env.GOOGLE_TEST_PASSWORD
     }
-  }
+  },
+  video: true
 });
