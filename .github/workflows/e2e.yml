@@ -49,3 +49,6 @@ jobs:
 
       - name: Report to trello
         run: ./scripts/report-trello.sh
+        env:
+          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
