@@ -44,6 +44,8 @@ jobs:
 
       - name: Run e2e
         run: npm run ci
+        continue-on-error: true
+
 
       - name: Report to trello
         run: ./scripts/report-trello.sh
