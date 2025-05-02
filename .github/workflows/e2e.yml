@@ -36,7 +36,7 @@ jobs:
 
       - name: Get trello card
         run: |
-          ./scripts/find-trello-card.sh jo57C1fP "${{ secrets.TRELLO_KEY }}" "${{ secrets.TRELLO_TOKEN }}" | jq '.labels'
+          ./scripts/define-cypress-tags.sh jo57C1fP "${{ secrets.TRELLO_KEY }}" "${{ secrets.TRELLO_TOKEN }}" | jq '.labels'
 
       - name: Prepare Github Context
         id: find_card
