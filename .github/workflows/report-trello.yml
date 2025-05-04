@@ -1,0 +1,34 @@
+name: Get Trello Labels
+
+on:
+  workflow_call:
+    outputs:
+      labels: 
+        description: "Trello card labels"
+        value: ${{ jobs.get-card-labels.outputs.labels }}
+    secrets:
+      TRELLO_KEY:
+        required: true
+      TRELLO_TOKEN:
+        required: true
+
+jobs:
+  get-card-labels:
+    runs-on: ubuntu-latest
+    outputs:
+      labels: ${{ steps.output.outputs.labels }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare Trello Context
+        id: find_card
+        run: |
+          ./scripts/prepare-trello-context.sh
+        env:
+          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+
+      - name: Output
+        id: output
+        run: |
+          echo "labels=$TRELLO_TAGS">>$GITHUB_OUTPUT

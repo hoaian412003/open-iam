@@ -1,0 +1,33 @@
+# .github/workflows/build.yml
+name: Full Flow CI
+
+on:
+  push:
+    branches:
+      - 'ft/*'  # Trigger only when branch starts with 'ft/'
+
+  pull_request:
+    branches:
+      - 'ft/*'  # Trigger on PRs with branches starting with 'ft/'
+
+
+jobs:
+
+  build-and-push:
+    uses: './.github/workflows/build.yml'
+    secrets: 
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  get-trello-labels:
+    uses: './.github/workflows/get-trello-labels.yml'
+    secrets:
+      TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+      TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+
+  e2e-test:
+    uses: ./.github/workflows/test-e2e.yml
+    needs: [build-and-push, get-trello-labels]
+    with:
+      docker_image: ${{ needs.build-and-push.outputs.image_tag }}
+      cypress_tags: ${{ needs.get-trello-labels.outputs.labels }}
