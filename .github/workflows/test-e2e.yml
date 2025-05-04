@@ -3,9 +3,6 @@ name: Test E2E
 on:
   workflow_call:
     inputs:
-      docker_image:
-        required: true
-        type: string
       cypress_tags:
         required: true
         type: string
@@ -34,4 +31,4 @@ jobs:
           password: ${{env.DOCKER_PASSWORD}}
 
       - name: Run test
-        run: docker run -e "CYPRESS_grepTags=${{inputs.cypress_tags}}" ${{inputs.docker_image}} ci 
+        run: docker run -e "CYPRESS_grepTags=${{inputs.cypress_tags}}" "$DOCKER_TAG" ci 
